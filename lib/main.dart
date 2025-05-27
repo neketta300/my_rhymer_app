@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:my_rhymer/api/api.dart';
 import 'package:my_rhymer/router/router.dart';
 import 'package:my_rhymer/ui/ui.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  final client = RhymeApiClient.create(apiUrl: dotenv.env['API_URL']);
   runApp(const MyRhymerApp());
 }
+
+void initApplicationDependencies() {}
 
 class MyRhymerApp extends StatefulWidget {
   const MyRhymerApp({super.key});
