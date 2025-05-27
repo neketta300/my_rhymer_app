@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:my_rhymer/features/search/widgets/widgets.dart';
+
+import '../../../ui/ui.dart';
 
 @RoutePage()
 class HistoryScreen extends StatelessWidget {

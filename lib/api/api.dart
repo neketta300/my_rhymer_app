@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:my_rhymer/api/models/rhymes.dart';
 import 'package:retrofit/retrofit.dart';

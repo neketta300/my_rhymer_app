@@ -19,6 +19,7 @@ class _RhymeApiClient implements RhymeApiClient {
 
   @override
   Future<Rhymes> getRhymesList(String word) async {
+    await Future.delayed(const Duration(seconds: 1));
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'word': word};
     final _headers = <String, dynamic>{};
