@@ -24,9 +24,14 @@ class RhymeHistoryCard extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              rhymes.map((e) => '$e, ').join(),
+              rhymes.join(', '),
               overflow: TextOverflow.ellipsis,
-              maxLines: 3,
+              maxLines: 4,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                color: theme.hintColor.withValues(alpha: 0.4),
+              ),
             ),
           ),
           // Wrap(

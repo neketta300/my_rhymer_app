@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/ui.dart';
+import '../widgets/search_rhymes_bottom_sheet.dart';
 import '../widgets/widgets.dart';
 
 @RoutePage()
@@ -12,16 +13,20 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+        SliverAppBar(
           snap: true,
           floating: true,
           centerTitle: true,
           surfaceTintColor: Colors.transparent,
           pinned: true,
-          title: Text('My Rhymer'),
+          title: const Text('My Rhymer'),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: SearchButton(),
+            preferredSize: const Size.fromHeight(70),
+            child: SearchButton(
+              onTap: () {
+                _showSearchBottomSheet(context);
+              },
+            ),
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -47,6 +52,21 @@ class SearchScreen extends StatelessWidget {
           itemBuilder: (context, index) => const RhymeListCard(rhyme: 'рифма'),
         ),
       ],
+    );
+  }
+
+  Future<dynamic> _showSearchBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      // позволяет полностью открыть ботомшит
+      isScrollControlled: true,
+
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder:
+          (context) => const Padding(
+            padding: EdgeInsets.only(top: 60),
+            child: SearchRhymesBottomSheet(),
+          ),
     );
   }
 }
