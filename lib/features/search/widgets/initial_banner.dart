@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class InitialBanner extends StatelessWidget {
-  const InitialBanner({super.key});
+class RhymesListInitialBanner extends StatelessWidget {
+  const RhymesListInitialBanner({super.key});
 
   @override
   Widget build(BuildContext context) {

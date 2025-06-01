@@ -8,9 +8,11 @@ import 'package:my_rhymer/features/search/bloc/rhymes_list_bloc.dart';
 import 'package:my_rhymer/repositories/favorites/favorite_repository.dart';
 import 'package:my_rhymer/repositories/history/history_repository.dart';
 import 'package:my_rhymer/repositories/history/models/history_rhymes.dart';
+import 'package:my_rhymer/repositories/settings/settings.dart';
 import 'package:my_rhymer/router/router.dart';
 import 'package:my_rhymer/ui/ui.dart';
 import 'package:realm/realm.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/history/bloc/history_rhymes_bloc.dart';
 import 'repositories/favorites/models/favorite_rhymes.dart';
@@ -23,14 +25,16 @@ Future<void> main() async {
     FavoriteRhymes.schema,
   ]);
   final realm = Realm(config);
-  runApp(MyRhymerApp(realm: realm));
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyRhymerApp(realm: realm, prefs: prefs));
 }
 
 void initApplicationDependencies() {}
 
 class MyRhymerApp extends StatefulWidget {
-  const MyRhymerApp({super.key, required this.realm});
+  const MyRhymerApp({super.key, required this.realm, required this.prefs});
 
+  final SharedPreferences prefs;
   final Realm realm;
 
   @override
@@ -43,6 +47,7 @@ class _MyRhymerAppState extends State<MyRhymerApp> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsRepository = SettingsRepository(prefs: widget.prefs);
     final historyRepository = HistoryRepository(realm: widget.realm);
     final favoriteRepository = FavoriteRepository(realm: widget.realm);
     return MultiBlocProvider(
@@ -67,7 +72,10 @@ class _MyRhymerAppState extends State<MyRhymerApp> {
                 favoriteRepository: favoriteRepository,
               ),
         ),
-        BlocProvider(create: (context) => ThemeCubit()),
+        BlocProvider(
+          create:
+              (context) => ThemeCubit(settingsRepository: settingsRepository),
+        ),
       ],
 
       child: BlocBuilder<ThemeCubit, ThemeState>(

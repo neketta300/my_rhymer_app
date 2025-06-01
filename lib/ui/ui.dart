@@ -1,2 +1,2 @@
-export 'theme/them.dart';
+export 'theme/theme.dart';
 export 'widgets/widgets.dart';
