@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_rhymer/ui/ui.dart' show BaseContainer;
 
 class RhymeHistoryCard extends StatelessWidget {
-  const RhymeHistoryCard({super.key, required this.rhymes});
+  const RhymeHistoryCard({super.key, required this.rhymes, required this.word});
 
   final List<String> rhymes;
+  final String word;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class RhymeHistoryCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Слово',
+            word,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w700,
             ),

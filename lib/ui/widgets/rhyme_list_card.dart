@@ -7,18 +7,18 @@ class RhymeListCard extends StatelessWidget {
     this.isFavorite = false,
     required this.rhyme,
     this.sourceWord,
+    required this.onTap,
   });
 
   final String rhyme;
   final String? sourceWord;
   final bool isFavorite;
-
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BaseContainer(
       width: double.infinity,
-
       margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,7 @@ class RhymeListCard extends StatelessWidget {
 
           // добавление листа виджедов в список видждетов с помощью ...
           IconButton(
-            onPressed: () {},
+            onPressed: onTap,
             icon: Icon(
               Icons.favorite,
               color:

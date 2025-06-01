@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_rhymer/api/models/rhymes.dart';
+import 'package:my_rhymer/features/favorite/bloc/favorite_rhymes_bloc.dart';
 import 'package:my_rhymer/features/search/bloc/rhymes_list_bloc.dart';
 
 import '../../../ui/ui.dart';
+import '../../history/bloc/history_rhymes_bloc.dart';
 import '../widgets/widgets.dart';
 
 @RoutePage()
@@ -16,6 +21,12 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final _searchTextEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    BlocProvider.of<HistoryRhymesBloc>(context).add(LoadHistoryRhymes());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,31 +51,56 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: 100,
-            child: ListView.separated(
-              padding: const EdgeInsets.only(left: 16),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final rhymes = List.generate(4, (index) => ('Рифма $index'));
-                return RhymeHistoryCard(rhymes: rhymes);
-              },
-              separatorBuilder:
-                  (BuildContext context, int index) =>
-                      const SizedBox(width: 16),
-              itemCount: 10,
-            ),
+          child: BlocConsumer<HistoryRhymesBloc, HistoryRhymesState>(
+            listener: (context, state) {
+              _handleRhymesListState(state, context);
+            },
+            builder: (context, state) {
+              if (state is! HistoryRhymesLoaded) return const SizedBox();
+              return SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(left: 16),
+                  itemCount: state.rhymes.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return RhymeHistoryCard(
+                      rhymes: state.rhymes[index].rhymes,
+                      word: state.rhymes[index].word,
+                    );
+                  },
+                  separatorBuilder:
+                      (BuildContext context, int index) =>
+                          const SizedBox(width: 16),
+                ),
+              );
+            },
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         BlocBuilder<RhymesListBloc, RhymesListState>(
           builder: (context, state) {
             if (state is RhymesListLoaded) {
-              final rhymes = state.rhymes.rhymes;
+              final rhymesModel = state.rhymes;
+              final rhymes = rhymesModel.rhymes;
               return SliverList.builder(
                 itemCount: rhymes.length,
-                itemBuilder:
-                    (context, index) => RhymeListCard(rhyme: rhymes[index]),
+                itemBuilder: (context, index) {
+                  final rhyme = rhymes[index];
+                  return RhymeListCard(
+                    rhyme: rhyme,
+                    isFavorite: state.isFavorite(rhyme),
+                    onTap: () {
+                      _toggleFavorite(
+                        context,
+                        state,
+                        rhymes,
+                        index,
+                        rhymesModel,
+                      );
+                    },
+                  );
+                },
               );
             }
             if (state is RhymesListLoading) {
@@ -78,6 +114,35 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ],
     );
+  }
+
+  Future<void> _toggleFavorite(
+    BuildContext context,
+    RhymesListLoaded state,
+    List<String> rhymes,
+    int index,
+    Rhymes rhymesModel,
+  ) async {
+    final rhymesListBloc = BlocProvider.of<RhymesListBloc>(context);
+    final favoriteRhtmesBloc = BlocProvider.of<FavoriteRhymesBloc>(context);
+    final completer = Completer();
+    rhymesListBloc.add(
+      ToggleFavoriteRhymes(
+        queryWord: state.queryWord,
+        favoriteWord: rhymes[index],
+        rhymes: rhymesModel,
+        completer: completer,
+      ),
+    );
+    // ждет когда будет вызван complete() в блоке
+    await completer.future;
+    favoriteRhtmesBloc.add(LoadFavoriteRhymes());
+  }
+
+  void _handleRhymesListState(HistoryRhymesState state, BuildContext context) {
+    if (state is RhymesListLoaded) {
+      BlocProvider.of<HistoryRhymesBloc>(context).add(LoadHistoryRhymes());
+    }
   }
 
   Future<void> _showSearchBottomSheet() async {
