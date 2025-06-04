@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api.dart';
+part of 'rhymes_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator

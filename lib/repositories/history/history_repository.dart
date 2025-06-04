@@ -1,4 +1,3 @@
-import 'package:my_rhymer/repositories/history/models/history_rhymes.dart';
 import 'package:realm/realm.dart';
 
 import 'history.dart';

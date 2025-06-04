@@ -2,10 +2,9 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_rhymer/repositories/history/history_repository.dart';
+import 'package:my_rhymer/repositories/history/history.dart';
 
-import '../../../repositories/favorites/favorite.dart';
-import '../../../repositories/favorites/models/favorite_rhymes.dart';
+import '../../../repositories/favorites/favorites.dart';
 
 part 'favorite_rhymes_event.dart';
 part 'favorite_rhymes_state.dart';
@@ -16,7 +15,7 @@ class FavoriteRhymesBloc
 
   FavoriteRhymesBloc({
     required FavoriteRepositoryI favoriteRepository,
-    required HistoryRepository historyRepository,
+    required HistoryRepositoryI historyRepository,
   }) : _favoriteRepository = favoriteRepository,
        super(FavoriteRhymesInitial()) {
     on<LoadFavoriteRhymes>(_onLoadHisrotyRhymes);

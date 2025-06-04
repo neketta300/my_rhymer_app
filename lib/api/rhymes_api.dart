@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:my_rhymer/api/models/rhymes.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'api.g.dart';
+part 'rhymes_api.g.dart';
 
 @RestApi(baseUrl: '')
 abstract class RhymeApiClient {

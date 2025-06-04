@@ -4,5 +4,6 @@
   "source.organizeImports": "explicit"
  },
  "editor.formatOnSave": true,
- "cmake.ignoreCMakeListsMissing": true
+ "cmake.ignoreCMakeListsMissing": true,
+ "java.configuration.updateBuildConfiguration": "interactive"
 }

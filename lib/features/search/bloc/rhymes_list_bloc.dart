@@ -3,10 +3,9 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_rhymer/api/api.dart';
 import 'package:my_rhymer/api/models/rhymes.dart';
-import 'package:my_rhymer/repositories/favorites/favorite.dart';
-import 'package:my_rhymer/repositories/favorites/models/favorite_rhymes.dart';
+import 'package:my_rhymer/api/rhymes_api.dart';
+import 'package:my_rhymer/repositories/favorites/favorites.dart';
 import 'package:my_rhymer/repositories/history/history.dart';
 
 part 'rhymes_list_event.dart';

@@ -1,7 +1,6 @@
 import 'package:realm/realm.dart';
 
-import 'favorite.dart';
-import 'models/favorite_rhymes.dart';
+import 'favorites.dart';
 
 class FavoriteRepository implements FavoriteRepositoryI {
   FavoriteRepository({required this.realm});
