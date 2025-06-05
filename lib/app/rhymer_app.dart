@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_rhymer/bloc/cubit/theme_cubit.dart';
 import 'package:my_rhymer/router/router.dart';
 import 'package:my_rhymer/ui/ui.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+import '../generated/l10n.dart';
 import 'app.dart';
 
 class MyRhymerApp extends StatefulWidget {
@@ -29,6 +31,14 @@ class _MyRhymerAppState extends State<MyRhymerApp> {
           final talker = context.read<Talker>();
 
           return MaterialApp.router(
+            // для локализации
+            localizationsDelegates: [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
             title: 'MyRhymer',
             theme: state.isDark ? darkTheme : lightTheme,
             routerConfig: _router.config(

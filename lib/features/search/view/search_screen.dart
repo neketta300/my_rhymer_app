@@ -7,6 +7,7 @@ import 'package:my_rhymer/api/models/rhymes.dart';
 import 'package:my_rhymer/features/favorite/bloc/favorite_rhymes_bloc.dart';
 import 'package:my_rhymer/features/search/bloc/rhymes_list_bloc.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../ui/ui.dart';
 import '../../history/bloc/history_rhymes_bloc.dart';
 import '../widgets/widgets.dart';
@@ -38,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
           snap: true,
           floating: true,
           centerTitle: true,
-          title: const Text('My Rhymer'),
+          title: const Text('Rhymer'),
           elevation: 0,
           surfaceTintColor: Colors.transparent,
           bottom: PreferredSize(
@@ -56,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: TextField(
                         controller: _searchTextEditingController,
                         decoration: InputDecoration(
-                          hintText: 'Начни вводить слово...',
+                          hintText: S.of(context).startTypingTheWord,
                           hintStyle: TextStyle(
                             color: theme.hintColor.withValues(alpha: 0.5),
                           ),

@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:my_rhymer/router/router.dart';
 
+import '../../../generated/l10n.dart';
+
 @RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,22 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (index) => _openPage(index, tabsRouter),
               unselectedItemColor: theme.hintColor,
               selectedItemColor: theme.primaryColor,
-              items: const [
+              items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: 'Поиск',
+                  icon: const Icon(Icons.search),
+                  label: S.of(context).search,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite),
-                  label: 'Избранное',
+                  icon: const Icon(Icons.favorite),
+                  label: S.of(context).favorite,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.history),
-                  label: 'История',
+                  icon: const Icon(Icons.history),
+                  label: S.of(context).history,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Настройки',
+                  icon: const Icon(Icons.settings),
+                  label: S.of(context).settings,
                 ),
               ],
             ),

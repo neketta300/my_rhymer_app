@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_rhymer/generated/l10n.dart';
 
 class RhymesListInitialBanner extends StatelessWidget {
   const RhymesListInitialBanner({super.key});
@@ -10,11 +11,14 @@ class RhymesListInitialBanner extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Начни искать', style: theme.textTheme.headlineLarge),
+          Text(
+            S.of(context).startLooking,
+            style: theme.textTheme.headlineLarge,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
-              'Введите в строку поиска,\nчтобы найти рифмы',
+              S.of(context).typeInTheSearchBarToFindRhymes,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium,
             ),

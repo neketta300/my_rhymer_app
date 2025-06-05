@@ -1,0 +1,14 @@
+{
+  "favorite": "Избранное",
+  "history": "История",
+  "search": "Поиск",
+  "settings": "Настройки",
+  "startTypingTheWord": "Начнити вводить слово...",
+  "startLooking": "Начнити искать",
+  "typeInTheSearchBarToFindRhymes": "Введите в строку поиска,\nчтобы найти рифмы",
+  "darkTheme": "Темная тема",
+  "notifications": "Уведомления",
+  "allowAnalytics": "Разрешить аналитику",
+  "clearHistory": "Очистить историю",
+  "support": "Поддержка"
+}

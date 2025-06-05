@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_rhymer/generated/l10n.dart';
 
 import '../../../ui/ui.dart';
 import '../bloc/favorite_rhymes_bloc.dart';
@@ -24,14 +25,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+        SliverAppBar(
           snap: true,
           floating: true,
           centerTitle: true,
           pinned: true,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          title: Text('Избранное'),
+          title: Text(S.of(context).favorite),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         BlocBuilder<FavoriteRhymesBloc, FavoriteRhymesState>(

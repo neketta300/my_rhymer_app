@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_rhymer/ui/ui.dart';
 
 import '../../../bloc/cubit/theme_cubit.dart';
+import '../../../generated/l10n.dart';
 import '../../history/bloc/history_rhymes_bloc.dart';
 import '../widgets/widgets.dart';
 
@@ -17,19 +18,19 @@ class SettingsScreen extends StatelessWidget {
     final isDark = context.watch<ThemeCubit>().state.isDark;
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+        SliverAppBar(
           snap: true,
           floating: true,
           centerTitle: true,
           pinned: true,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          title: Text('Настройки'),
+          title: Text(S.of(context).settings),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         SliverToBoxAdapter(
           child: SettingsToggleCard(
-            title: 'Темная тема',
+            title: S.of(context).darkTheme,
             value: isDark,
             onChanged: (value) {
               context.read<ThemeCubit>().setThemeBrightness(
@@ -40,14 +41,14 @@ class SettingsScreen extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: SettingsToggleCard(
-            title: 'Уведомления',
+            title: S.of(context).notifications,
             value: true,
             onChanged: (value) {},
           ),
         ),
         SliverToBoxAdapter(
           child: SettingsToggleCard(
-            title: 'Разрешить аналитику',
+            title: S.of(context).allowAnalytics,
             value: false,
             onChanged: (value) {},
           ),
@@ -55,7 +56,7 @@ class SettingsScreen extends StatelessWidget {
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         SliverToBoxAdapter(
           child: SettingsActionCard(
-            title: 'Очистить историю',
+            title: S.of(context).clearHistory,
             icon: Icons.delete_sweep_outlined,
             color: Colors.red,
             onTap: () {
@@ -65,7 +66,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: SettingsActionCard(
-            title: 'Поддержка',
+            title: S.of(context).support,
             icon: Icons.message_outlined,
             onTap: () {
               showModalBottomSheet(
