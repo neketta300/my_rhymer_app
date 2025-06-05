@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_rhymer/repositories/history/history.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../repositories/favorites/favorites.dart';
 
@@ -12,11 +10,12 @@ part 'favorite_rhymes_state.dart';
 class FavoriteRhymesBloc
     extends Bloc<FavoriteRhymesEvent, FavoriteRhymesState> {
   final FavoriteRepositoryI _favoriteRepository;
-
+  final Talker _talker;
   FavoriteRhymesBloc({
+    required Talker talker,
     required FavoriteRepositoryI favoriteRepository,
-    required HistoryRepositoryI historyRepository,
   }) : _favoriteRepository = favoriteRepository,
+       _talker = talker,
        super(FavoriteRhymesInitial()) {
     on<LoadFavoriteRhymes>(_onLoadHisrotyRhymes);
     on<ToggleFavoriteRhyme>(_onToggleFavorite);
@@ -30,8 +29,9 @@ class FavoriteRhymesBloc
       emit(FavoriteRhymesLoading());
       final rhymes = await _favoriteRepository.getRhymesList();
       emit(FavoriteRhymesLoaded(rhymes: rhymes));
-    } catch (e) {
+    } catch (e, st) {
       emit(FavoriteRhymesFailure(error: e.toString()));
+      _talker.handle(e, st);
     }
   }
 
@@ -42,8 +42,8 @@ class FavoriteRhymesBloc
     try {
       _favoriteRepository.createOrDeleteRhymes(event.favoriteRhyme);
       add(LoadFavoriteRhymes());
-    } catch (e) {
-      log(e.toString());
+    } catch (e, st) {
+      _talker.handle(e, st);
     }
   }
 }

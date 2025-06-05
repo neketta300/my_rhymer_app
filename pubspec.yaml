@@ -45,6 +45,9 @@ dependencies:
   firebase_core: ^3.13.1
   firebase_messaging: ^15.2.6
   flutter_local_notifications: ^19.2.1
+  talker_flutter: ^4.8.2
+  talker_dio_logger: ^4.8.2
+  talker_bloc_logger: ^4.8.2
   
 dev_dependencies:
   flutter_test:

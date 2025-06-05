@@ -6,6 +6,7 @@ import 'package:my_rhymer/bloc/cubit/theme_cubit.dart';
 import 'package:my_rhymer/features/favorite/bloc/favorite_rhymes_bloc.dart';
 import 'package:my_rhymer/features/search/bloc/rhymes_list_bloc.dart';
 import 'package:my_rhymer/repositories/settings/settings.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../features/history/bloc/history_rhymes_bloc.dart';
 import '../repositories/favorites/favorites.dart';
@@ -26,6 +27,7 @@ class AppInitializer extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<Talker>.value(value: appConfig.talker),
         RepositoryProvider<SettingsRepositoryI>(
           create:
               (context) =>
@@ -45,28 +47,32 @@ class AppInitializer extends StatelessWidget {
                 (context) => RhymesListBloc(
                   apiClient: RhymeApiClient.create(
                     apiUrl: dotenv.env['API_URL'],
+                    context: context,
                   ),
                   historyRepository: context.read<HistoryRepositoryI>(),
                   favoriteRepository: context.read<FavoriteRepositoryI>(),
+                  talker: context.read<Talker>(),
                 ),
           ),
           BlocProvider(
             create:
                 (context) => HistoryRhymesBloc(
                   historyRepository: context.read<HistoryRepositoryI>(),
+                  talker: context.read<Talker>(),
                 ),
           ),
           BlocProvider(
             create:
                 (context) => FavoriteRhymesBloc(
-                  historyRepository: context.read<HistoryRepositoryI>(),
                   favoriteRepository: context.read<FavoriteRepositoryI>(),
+                  talker: context.read<Talker>(),
                 ),
           ),
           BlocProvider(
             create:
                 (context) => ThemeCubit(
                   settingsRepository: context.read<SettingsRepositoryI>(),
+                  talker: context.read<Talker>(),
                 ),
           ),
         ],

@@ -1,20 +1,23 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_rhymer/repositories/settings/settings.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit({required SettingsRepositoryI settingsRepository})
-    : _settingsRepository = settingsRepository,
-      super(const ThemeState(Brightness.light)) {
+  ThemeCubit({
+    required SettingsRepositoryI settingsRepository,
+    required Talker talker,
+  }) : _settingsRepository = settingsRepository,
+       _talker = talker,
+       super(const ThemeState(Brightness.light)) {
     _checkSelectedTheme();
   }
 
   final SettingsRepositoryI _settingsRepository;
+  final Talker _talker;
 
   Future<void> setThemeBrightness(Brightness brightness) async {
     try {
@@ -22,8 +25,8 @@ class ThemeCubit extends Cubit<ThemeState> {
       await _settingsRepository.setDarkThemeSelected(
         brightness == Brightness.dark,
       );
-    } catch (e) {
-      log(e.toString());
+    } catch (e, st) {
+      _talker.handle(e, st);
     }
   }
 
@@ -34,8 +37,8 @@ class ThemeCubit extends Cubit<ThemeState> {
               ? Brightness.dark
               : Brightness.light;
       emit(ThemeState(brightness));
-    } catch (e) {
-      log(e.toString());
+    } catch (e, st) {
+      _talker.handle(e, st);
     }
   }
 }

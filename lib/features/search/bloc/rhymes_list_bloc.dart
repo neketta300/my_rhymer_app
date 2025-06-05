@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,17 +6,20 @@ import 'package:my_rhymer/api/models/rhymes.dart';
 import 'package:my_rhymer/api/rhymes_api.dart';
 import 'package:my_rhymer/repositories/favorites/favorites.dart';
 import 'package:my_rhymer/repositories/history/history.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'rhymes_list_event.dart';
 part 'rhymes_list_state.dart';
 
 class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
   RhymesListBloc({
+    required Talker talker,
     required RhymeApiClient apiClient,
     required HistoryRepositoryI historyRepository,
     required FavoriteRepositoryI favoriteRepository,
   }) : _historyRepository = historyRepository,
        _apiClient = apiClient,
+       _talker = talker,
        _favoriteRepository = favoriteRepository,
        super(RhymesListInitial()) {
     on<SearchRhymes>(_onSearch);
@@ -26,7 +28,7 @@ class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
   final HistoryRepositoryI _historyRepository;
   final RhymeApiClient _apiClient;
   final FavoriteRepositoryI _favoriteRepository;
-
+  final Talker _talker;
   Future<void> _onSearch(
     SearchRhymes event,
     Emitter<RhymesListState> emit,
@@ -45,8 +47,9 @@ class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
           favoriteRhymes: favoriteRhymes,
         ),
       );
-    } catch (e) {
+    } catch (e, st) {
       emit(RhymesListFailure(error: e));
+      _talker.handle(e, st);
     }
   }
 
@@ -64,8 +67,8 @@ class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
 
       final favoriteRhymes = await _favoriteRepository.getRhymesList();
       emit(prevState.copyWith(favoriteRhymes: favoriteRhymes));
-    } catch (e) {
-      log(e.toString());
+    } catch (e, st) {
+      _talker.handle(e, st);
     } finally {
       event.completer?.complete();
     }

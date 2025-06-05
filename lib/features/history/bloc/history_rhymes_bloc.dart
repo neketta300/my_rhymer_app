@@ -1,19 +1,20 @@
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_rhymer/repositories/history/history.dart';
-import 'package:my_rhymer/repositories/history/models/history_rhymes.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'history_rhymes_event.dart';
 part 'history_rhymes_state.dart';
 
 class HistoryRhymesBloc extends Bloc<HistoryRhymesEvent, HistoryRhymesState> {
   final HistoryRepositoryI _historyRepository;
-
-  HistoryRhymesBloc({required HistoryRepositoryI historyRepository})
-    : _historyRepository = historyRepository,
-      super(HistoryRhymesInitial()) {
+  final Talker _talker;
+  HistoryRhymesBloc({
+    required HistoryRepositoryI historyRepository,
+    required Talker talker,
+  }) : _historyRepository = historyRepository,
+       _talker = talker,
+       super(HistoryRhymesInitial()) {
     on<LoadHistoryRhymes>(_onLoadHisrotyRhymes);
     on<ClearRhymesHistory>(_onClearRhymesHistory);
   }
@@ -26,8 +27,9 @@ class HistoryRhymesBloc extends Bloc<HistoryRhymesEvent, HistoryRhymesState> {
       emit(HistoryRhymesLoading());
       final rhymes = await _historyRepository.getRhymesList();
       emit(HistoryRhymesLoaded(rhymes: rhymes));
-    } catch (e) {
+    } catch (e, st) {
       emit(HistoryRhymesFailure(error: e.toString()));
+      _talker.handle(e, st);
     }
   }
 
@@ -38,9 +40,9 @@ class HistoryRhymesBloc extends Bloc<HistoryRhymesEvent, HistoryRhymesState> {
     try {
       await _historyRepository.clear();
       add(LoadHistoryRhymes());
-    } catch (e) {
-      log(e.toString());
-      // emit(HistoryRhymesFailure(error: e.toString()));
+    } catch (e, st) {
+      emit(HistoryRhymesFailure(error: e.toString()));
+      _talker.handle(e, st);
     }
   }
 }
